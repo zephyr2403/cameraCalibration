@@ -37,3 +37,23 @@ for imageName in images:
         cv2.waitKey(500)
 
 cv2.destroyAllWindows()
+
+
+# loading distorted image
+testImg = cv2.imread('images/test_image.jpg')
+
+# Do camera calibration given object points and image points
+ret, mtx, dist, rvecs, tvecs = cv2.calibrateCamera(objpoints, imgpoints, (testImg.shape[1], testImg.shape[0]),None,None)
+
+#undistorting the image via calibration matrix 
+dst = cv2.undistort(testImg, mtx, dist, None, mtx)
+#Saving the undistorted image
+cv2.imwrite('images/test_undist.jpg',dst)
+
+# Visualize undistortion
+_, (ax1, ax2) = plt.subplots(1, 2, figsize=(20,10))
+ax1.imshow(testImg)
+ax1.set_title('Original Image', fontsize=30)
+ax2.imshow(dst)
+ax2.set_title('Undistorted Image', fontsize=30)
+plt.show()
